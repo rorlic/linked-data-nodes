@@ -1,0 +1,171 @@
+[
+    {
+        "id": "2fae9b1b3dc3d804",
+        "type": "tab",
+        "label": "linked Data Nodes - TEST",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "bd79d44b7d9eee56",
+        "type": "parse-rdf",
+        "z": "2fae9b1b3dc3d804",
+        "name": "Parse quads",
+        "format": "",
+        "x": 310,
+        "y": 60,
+        "wires": [
+            [
+                "897a0129cca6d598"
+            ]
+        ]
+    },
+    {
+        "id": "49d7cb8248c83e37",
+        "type": "http in",
+        "z": "2fae9b1b3dc3d804",
+        "name": "POST /convert",
+        "url": "/convert",
+        "method": "post",
+        "upload": false,
+        "skipBodyParsing": false,
+        "swaggerDoc": "",
+        "x": 100,
+        "y": 60,
+        "wires": [
+            [
+                "bd79d44b7d9eee56"
+            ]
+        ]
+    },
+    {
+        "id": "6b2be435edbef372",
+        "type": "http response",
+        "z": "2fae9b1b3dc3d804",
+        "name": "HTTP OK",
+        "statusCode": "200",
+        "headers": {},
+        "x": 680,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "897a0129cca6d598",
+        "type": "write-rdf",
+        "z": "2fae9b1b3dc3d804",
+        "name": "As quads",
+        "format": "application/n-quads",
+        "x": 500,
+        "y": 60,
+        "wires": [
+            [
+                "6b2be435edbef372"
+            ]
+        ]
+    },
+    {
+        "id": "11e4d417e5cbf78b",
+        "type": "ldes-client",
+        "z": "2fae9b1b3dc3d804",
+        "name": "",
+        "url": "https://ldes.telraam-api.net/locations/by-page",
+        "isview": true,
+        "ordered": "none",
+        "materialize": false,
+        "onlylast": false,
+        "x": 90,
+        "y": 140,
+        "wires": [
+            [
+                "0649f32c2521fd7f"
+            ]
+        ]
+    },
+    {
+        "id": "fab08ba823f62c25",
+        "type": "debug",
+        "z": "2fae9b1b3dc3d804",
+        "name": "Debug",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 610,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "ab8fc8c1c8daf4d6",
+        "type": "sparql-query",
+        "z": "2fae9b1b3dc3d804",
+        "name": "SPARQL Construct: filter version info",
+        "query": "PREFIX dct:       <http://purl.org/dc/terms/>\nPREFIX verkeer:   <https://data.vlaanderen.be/ns/verkeersmetingen#>\nPREFIX prov:      <http://www.w3.org/ns/prov#>\nPREFIX geo:       <http://www.opengis.net/ont/geosparql#>\n\nPREFIX verkeer:    <https://data.vlaanderen.be/ns/verkeersmetingen#>\nPREFIX impl:       <https://implementatie.data.vlaanderen.be/ns/vsds-verkeersmetingen#>\nPREFIX dv-netwerk: <https://data.vlaanderen.be/ns/netwerk#>\n\n\nconstruct {\n  ?s a verkeer:Verkeersmeetpunt .\n  ?s dct:isVersionOf ?v .\n  ?s dct:created ?c .\n  ?s prov:generatedAtTime ?t .\n  ?s geo:asWKT ?g .\n} where {\n  ?s a verkeer:Verkeersmeetpunt .\n  ?s dct:isVersionOf ?v .\n  ?s dct:created ?c .\n  ?s prov:generatedAtTime ?t .\n\n  ?s verkeer:bemonsterdObject / impl:Rijrichting.netwerkreferentieelement / dv-netwerk:Link.geometriemiddellijn / geo:asWKT ?g .\n}",
+        "x": 550,
+        "y": 140,
+        "wires": [
+            [
+                "102a678b440d0f96"
+            ]
+        ],
+        "icon": "font-awesome/fa-filter"
+    },
+    {
+        "id": "4b31a7252857efe8",
+        "type": "write-rdf",
+        "z": "2fae9b1b3dc3d804",
+        "name": "Write as Turtle",
+        "format": "text/turtle",
+        "x": 400,
+        "y": 200,
+        "wires": [
+            [
+                "fab08ba823f62c25"
+            ]
+        ]
+    },
+    {
+        "id": "102a678b440d0f96",
+        "type": "function",
+        "z": "2fae9b1b3dc3d804",
+        "name": "Limit prefixes",
+        "func": "msg.prefixes = {\n    \"dct\":      \"http://purl.org/dc/terms/\",\n    \"verkeer\":  \"https://data.vlaanderen.be/ns/verkeersmetingen#\",\n    \"prov\":     \"http://www.w3.org/ns/prov#\",\n    \"geo\":      \"http://www.opengis.net/ont/geosparql#\"\n};\nreturn msg;\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 190,
+        "y": 200,
+        "wires": [
+            [
+                "4b31a7252857efe8"
+            ]
+        ]
+    },
+    {
+        "id": "0649f32c2521fd7f",
+        "type": "function",
+        "z": "2fae9b1b3dc3d804",
+        "name": "Extract quads",
+        "func": "msg.member = msg.payload;\nmsg.payload = msg.member.value.quads;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 140,
+        "wires": [
+            [
+                "ab8fc8c1c8daf4d6"
+            ]
+        ]
+    }
+]

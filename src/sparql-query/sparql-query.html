@@ -1,0 +1,52 @@
+<script type="text/javascript">
+  RED.nodes.registerType('sparql-query', {
+    category: 'linked data',
+    color: '#FF7082',
+    defaults: {
+      name: { value: "" },
+      query: { value: "" }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "filter.svg",
+    label: function() {
+      return this.name || "Transform quads";
+    },
+    oneditprepare: function() {
+      this.queryEditor = RED.editor.createEditor({
+        id: 'node-input-query-editor',
+        mode: 'ace/mode/text',
+        value: this.query
+      });
+      this.queryEditor.setOptions({
+        fontFamily: "consolas",
+        fontSize: "8pt"
+      });
+    },
+    oneditsave: function() {
+      this.query = this.queryEditor.getValue();
+      this.queryEditor.destroy();
+      delete this.queryEditor;
+    },
+    oneditcancel: function() {
+      this.queryEditor.destroy();
+      delete this.queryEditor;
+    },
+  });
+</script>
+
+<script type="text/html" data-template-name="sparql-query">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="(name)">
+  </div>
+  <div class="form-row">
+    <label for="node-input-query-editor"><i class="fa fa-tag"></i> Query</label>
+    <div style="height: 500px; min-height:250px;" class="node-text-editor" id="node-input-query-editor"></div>
+  </div>
+</script>
+
+<script type="text/html" data-help-name="sparql-query">
+  <p>Transforms the array of RDF quads (in the message payload) into another array of quads based on a SPARQL (construct) query.  
+  Output is <code>msg.payload</code> (array of quads).</p>
+</script>

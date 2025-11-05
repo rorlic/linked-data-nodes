@@ -1,0 +1,47 @@
+<script type="text/javascript">
+  RED.nodes.registerType('write-rdf', {
+    category: 'linked data',
+    color: '#DBF7CD',
+    defaults: {
+      name: { value: "" },
+      format: { value: "application/n-quads" },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "file.svg",
+    label: function() {
+      return this.name || "quads to rdf";
+    },
+    oneditprepare: function() {
+      $("#node-input-format").typedInput({
+        types: [
+          {
+            value: "format",
+            options: [
+              { value: "text/turtle", label: "Turtle"},
+              { value: "application/n-triples", label: "Triples"},
+              { value: "application/x+trig", label: "TriG"},
+              { value: "application/n-quads", label: "Quads"},
+            ]
+          }
+        ]
+      })
+    }
+  });
+</script>
+
+<script type="text/html" data-template-name="write-rdf">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="(name)">
+  </div>
+  <div class="form-row">
+    <label for="node-input-format"><i class="fa fa-tag"></i> Format</label>
+    <input type="text" id="node-input-format" placeholder="(format)">
+  </div>
+</script>
+
+<script type="text/html" data-help-name="write-rdf">
+  <p>Writes the <code>msg.payload</code> (array of quads) and <code>msg.prefixes</code> (prefix map) to RDF serializations.  
+  Output is a RDF serialization (defaults to text/turtle).</p>
+</script>

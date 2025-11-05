@@ -1,0 +1,41 @@
+{
+  "name": "@rorlic/linked-data-nodes",
+  "version": "1.0.0",
+  "description": "Nodes to parse, write and transform Linked Data",
+  "keywords": [
+    "RDF",
+    "Linked",
+    "Data",
+    "Node-RED",
+    "contrib",
+    "node"
+  ],
+  "homepage": "https://github.com/rorlic/linked-data-nodes#readme",
+  "bugs": {
+    "url": "https://github.com/rorlic/linked-data-nodes/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rorlic/linked-data-nodes.git"
+  },
+  "license": "MIT",
+  "author": "Ranko Orlic",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "node-red": {
+    "nodes": {
+      "parse-rdf": "parse-rdf/parse-rdf.js",
+      "write-rdf": "write-rdf/write-rdf.js",
+      "ldes-client": "ldes-client/ldes-client.js",
+      "sparql-query": "sparql-query/sparql-query.js"
+    }
+  },
+  "dependencies": {
+    "@comunica/query-sparql": "^4.4.1",
+    "ldes-client": "^0.2.4",
+    "n3": "^1.26.0"
+  }
+}

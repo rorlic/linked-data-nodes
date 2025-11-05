@@ -1,0 +1,48 @@
+<script type="text/javascript">
+  RED.nodes.registerType('parse-rdf', {
+    category: 'linked data',
+    color: '#DEBD5C',
+    defaults: {
+      name: { value: "" },
+      format: { value: "" },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: "file.svg",
+    label: function() {
+      return this.name || "rdf to quads";
+    },
+    oneditprepare: function() {
+      $("#node-input-format").typedInput({
+        types: [
+          {
+            value: "format",
+            options: [
+              { value: undefined, label: "(automatic)"},
+              { value: "text/turtle", label: "Turtle"},
+              { value: "application/n-triples", label: "Triples"},
+              { value: "application/x+trig", label: "TriG"},
+              { value: "application/n-quads", label: "Quads"},
+            ]
+          }
+        ]
+      })
+    }
+  });
+</script>
+
+<script type="text/html" data-template-name="parse-rdf">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="(name)">
+  </div>
+  <div class="form-row">
+    <label for="node-input-format"><i class="fa fa-tag"></i> Format</label>
+    <input type="text" id="node-input-format" placeholder="(format)">
+  </div>
+</script>
+
+<script type="text/html" data-help-name="parse-rdf">
+  <p>Parses the message payload (RDF serialization) into an array of RDF quads.  
+  Output is <code>msg.payload</code> (array of quads) and <code>msg.prefixes</code> (prefix map).</p>
+</script>

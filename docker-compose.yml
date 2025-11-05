@@ -1,0 +1,22 @@
+networks:
+  test:
+    name: test-network
+
+services:
+  
+  node-red:
+    image: nodered/node-red:4.1.1-22-minimal
+    networks:
+      - test
+    volumes:
+      - ./node-red:/data
+      - ./src:/tmp/linked-data-nodes:ro
+      - ./data:/tmp/data:ro
+    ports:
+      - 1880:1880
+    healthcheck:
+      test: curl http://node-red:1880
+      interval: 2s
+      retries: 15
+      start_period: 3s
+      timeout: 1s

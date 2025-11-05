@@ -1,0 +1,67 @@
+<script type="text/javascript">
+  RED.nodes.registerType('ldes-client', {
+    category: 'linked data',
+    color: '#F3D1FF',
+    defaults: {
+      name: { value: "" },
+      url: { value: "" },
+      isview: { value: false },
+      ordered: { value: "none" },
+      materialize: { value: false },
+      onlylast: { value: false },
+    },
+    inputs: 0,
+    outputs: 1,
+    icon: "logo-ldes.svg",
+    label: function() {
+      return this.name || "LDES client";
+    },
+    oneditprepare: function() {
+      $("#node-input-ordered").typedInput({
+        types: [
+          {
+            value: "ordered",
+            options: [
+              { value: "none", label: "(none)"},
+              { value: "ascending", label: "Ascending"},
+              { value: "descending", label: "Descending"},
+            ]
+          }
+        ]
+      })
+    }
+  });
+</script>
+
+<script type="text/html" data-template-name="ldes-client">
+  <div class="form-row">
+    <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="(name)">
+  </div>
+  <div class="form-row">
+    <label for="node-input-url"><i class="fa fa-tag"></i> URL</label>
+    <input type="text" id="node-input-url" placeholder="(URL)">
+  </div>
+  <div class="form-row">
+    <label for="node-input-isview"><i class="fa fa-tag"></i> Assume view</label>
+    <input type="checkbox" id="node-input-isview" placeholder="(is-view)">
+  </div>
+  <div class="form-row">
+    <label for="node-input-ordered"><i class="fa fa-tag"></i> Ordered</label>
+    <input type="text" id="node-input-ordered" placeholder="(ordered)">
+  </div>
+  <div class="form-row">
+    <label for="node-input-materialize"><i class="fa fa-tag"></i> Materialize</label>
+    <input type="checkbox" id="node-input-materialize" placeholder="(materialize)">
+  </div>
+  <div class="form-row">
+    <label for="node-input-onlylast"><i class="fa fa-tag"></i> Last member only</label>
+    <input type="checkbox" id="node-input-onlylast" placeholder="(last -member-only)">
+  </div>
+</script>
+
+<script type="text/html" data-help-name="ldes-client">
+  <p>Replicates and synchronizes a Linked Data event Stream (LDES) and creates a message for each found member.</p>
+  <p>A Linked Data Event Stream (LDES) (ldes:EventStream) is a collection of members that cannot be updated or removed once they are published, with each member being a set of RDF quads ([rdf-primer]). This way, the collection of members becomes an append-only log or event stream.</p>
+  <p>An LDES client is a piece of software used by a consumer that accepts the URL to an entry point, and returns a stream of members of the corresponding ldes:EventStream. The data stream emits the history that is available from this entry point, and once the consumer has caught up with the stream, it remains synchronized as new members are published. The client can be used in a consumer pipeline with other processors in the pipeline that can benefit from the context information provided by the client.</p>
+</script>
