@@ -8,7 +8,7 @@ module.exports = function(RED) {
     node.on('input', (msg, send, done) => {
       send = send || function() { node.send.apply(node, arguments); }; // Compatibility fallback
       try {
-        const settings = {format: node.config.format}
+        const settings = {format: node.config.format, baseIRI: node.config.baseIRI }
         const parser = new N3.Parser(settings);
         const quads = [];
         parser.parse(msg.payload, (error, quad, prefixes) => {

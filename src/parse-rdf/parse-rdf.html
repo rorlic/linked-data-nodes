@@ -5,6 +5,8 @@
     defaults: {
       name: { value: "" },
       format: { value: "" },
+      baseIRI: { value: "" },
+      blankNodePrefix: { value: "" },
     },
     inputs: 1,
     outputs: 1,
@@ -39,6 +41,14 @@
   <div class="form-row">
     <label for="node-input-format"><i class="fa fa-tag"></i> Format</label>
     <input type="text" id="node-input-format" placeholder="(format)">
+  </div>
+  <div class="form-row">
+    <label for="node-input-baseIRI"><i class="fa fa-tag"></i> Base IRI</label>
+    <input type="text" id="node-input-baseIRI" placeholder="(IRI)">
+  </div>
+  <div class="form-row">
+    <label for="node-input-blankNodePrefix"><i class="fa fa-tag"></i> Blank node prefix</label>
+    <input type="text" id="node-input-blankNodePrefix" placeholder="(prefix)">
   </div>
 </script>
 
