@@ -6,6 +6,14 @@ To launch the Node-RED environment:
 docker compose up -d --wait
 ```
 
+To build and re-install the linked data nodes:
+```bash
+./build.sh
+docker compose stop
+./install.sh
+docker compose start
+```
+
 To access the Node-RED graphical User interface: http://localhost:1880/
 
 To test the conversion Node-RED pipeline:
