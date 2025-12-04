@@ -68,6 +68,7 @@
         "id": "11e4d417e5cbf78b",
         "type": "ldes-client",
         "z": "2fae9b1b3dc3d804",
+        "d": true,
         "name": "",
         "url": "https://ldes.telraam-api.net/locations/by-page",
         "isview": true,
